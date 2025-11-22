@@ -1,0 +1,651 @@
+/* App.css - Coastal Analytics Dashboard */
+/* ==================================== */
+
+:root {
+  --coastal-blue: #62a7be;
+  --sand-tan: #D4C8AE;
+  --sea-green: #3A927D;
+  --deep-teal: #357c87;
+  --wave-blue: #4ECDC4;
+  --nav-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  --trueColor: #4ECDC4;
+  --ndwi: #2A6478;
+  --baseline: #f7240c;
+  --erosion: #6b8205;
+}
+
+/* Base Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+  color: #000;
+  background: #c9c9c9;
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* Navigation */
+.main-nav {
+  padding: 0.5rem 1rem;
+  background: #0077b6;
+  box-shadow: var(--nav-shadow);
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.logo {
+  margin: 0;
+  padding: 0;
+  font-size: 1.3rem;
+  color: white;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+}
+
+.nav-item {
+  color: var(--sand-tan);
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+/* Hero Sections */
+.page-hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+  padding: 2rem;
+}
+
+.home-hero {
+  background-image:  url('./images/img3.jpg');
+}
+
+.services-hero {
+  background-image: url('./images/img2.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+.contact-hero {
+  background-image: url('./images/img1.jpg');
+}
+
+.hero-section {
+  text-align: center;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.hero-title {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  color: beige;
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+}
+
+.hero-subtitle {
+  font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+  color: ocean var(--coastal-blue);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+
+
+/* Buttons */
+.cta-buttons {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  margin-top: 3rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background-color: var(--sea-green);
+  color: white;
+  border-color: var(--wave-blue);
+}
+
+.btn-secondary {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: white;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Dashboard Styles */
+.dashboard {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  flex: 1;
+}
+
+.dashboard h1 {
+  color: var(--deep-teal);
+  font-size: clamp(2rem, 3vw, 2.5rem);
+  margin-bottom: 2rem;
+}
+
+.controls {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+  margin: 2rem 0;
+  backdrop-filter: blur(8px);
+}
+
+.date-range {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+button {
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.btn-imagery {
+  background-color: var(--coastal-blue);
+  color: white;
+  border: 2px solid var(--wave-blue);
+}
+
+.btn-analyze {
+  background-color: var(--sea-green);
+  color: white;
+  border: 2px solid var(--sand-tan);
+}
+
+.layer-trueColor { background-color: var(--trueColor); }
+.layer-ndwi { background-color: var(--ndwi); }
+.layer-baseline { background-color: var(--baseline); }
+.layer-erosion { background-color: var(--erosion); }
+
+#map {
+  height: 70vh;
+  min-height: 400px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+  border: 2px solid white;
+  margin: 2rem 0;
+}
+
+/* Services Section */
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.service-card {
+  background: rgba(255, 255, 255, 0.1); /* Lighter, neutral transparent background */
+  border-radius: 12px;
+  padding: 2rem;
+  transition: transform 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+
+.service-card:hover {
+  transform: translateY(-5px);
+}
+
+.service-card h3 {
+  color: #05040a;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.service-card p {
+  color: rgba(0, 0, 0, 0.7);
+  line-height: 1.6;
+}
+
+/* Contact Section */
+.contact-section {
+  padding: 4rem 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.glass-card {
+  backdrop-filter: blur(16px); /* Removed saturate to avoid the greenish tint */
+  background: rgba(255, 255, 255, 0.15); /* Neutral background */
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.form-input {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1); /* Light translucent background */
+  color: #242424;
+  transition: all 0.3s ease;
+  margin-bottom: 1.5rem;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--wave-blue);
+  background: rgba(255, 255, 255, 0.2); /* Neutral focus background */
+  box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.2); /* You can adjust the box-shadow color */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .main-nav {
+    padding: 1rem;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    width: 100%;
+    text-align: center;
+  }
+
+  .nav-item {
+    width: 100%;
+    padding: 1rem;
+  }
+
+  .hero-section {
+    padding: 1rem;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  #map {
+    height: 50vh;
+    min-height: 300px;
+  }
+
+  .dashboard {
+    padding: 1rem;
+  }
+
+  .controls {
+    padding: 1.5rem;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  .service-grid {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+
+  .glass-card {
+    width: 95%;
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .date-range {
+    grid-template-columns: 1fr;
+  }
+
+  .service-card {
+    padding: 1.5rem;
+  }
+
+  .form-input {
+    padding: 0.8rem;
+  }
+}
+
+/* Loading Spinner */
+.spinner {
+  border: 4px solid rgba(243, 243, 243, 0.8);
+  border-top: 4px solid var(--wave-blue);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 2rem auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+/* Coastal Color Scheme */
+:root {
+  --coastal-blue: #2A6478;
+  --sand-tan: #D4C8AE;
+  --sea-green: #3A927D;
+  --deep-teal: #1A535C;
+  --wave-blue: #4ECDC4;
+}
+
+/* Base Styles */
+* {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+  color: #000000;
+  background: #cdd0cd;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Home Hero Section */
+.home-hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: linear-gradient(
+      rgba(110, 180, 191, 0.85),
+      rgba(88, 88, 88, 0.85)
+    ),
+    url('./images/img3.jpg');
+  background-size: cover;
+  background-position: center 65%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: white;
+  padding: 2rem;
+  overflow: hidden;
+}
+
+.hero-content {
+  text-align: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Hero Title */
+.hero-title {
+  font-size: 3.5rem;
+  margin-bottom: 2rem;
+  line-height: 1.2;
+  color: white; /* Bright white for contrast against background */
+}
+
+/* Hero Subtitle */
+.hero-subtitle {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 300;
+  margin-top: 1.5rem;
+  color: rgba(255, 255, 255, 0.7); /* Lighter white with transparency for subtle look */
+}
+
+
+/* CTA Buttons */
+.cta-buttons {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  margin-top: 3rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  border: 2px solid transparent;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.1); /* Light translucent background */
+  color: white;
+  backdrop-filter: blur(6px); /* Glassy effect */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary {
+  background-color: var(--coastal-blue); /* Sea green for primary button */
+  border-color: var(--coastal-blue);
+}
+
+.btn-secondary {
+  background-color: rgba(255, 255, 255, 0.15); /* Light gray for secondary button */
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn i {
+  color: #007BFF; /* Blue icons for both buttons */
+  font-size: 1.3rem;
+}
+
+.btn:hover i {
+  color: #ffffff; /* White on hover */
+}
+
+
+/* Features Section */
+.features-section {
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.section-title {
+  text-align: center;
+  color: #1a1a1a; /* Dark color */
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+}
+
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.feature-card {
+  background: rgba(255, 255, 255, 0.25); /* Light translucent */
+  padding: 2rem;
+  color:darkblue;
+  border-radius: 15px;
+  text-align: center;
+  transition: transform 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(12px); /* Glassmorphism effect */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.35); /* Slightly brighter on hover */
+}
+
+.feature-card h3 {
+  color: #1b2e5a; /* Darker navy blue for better readability */
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.feature-card p {
+  color: #2e2e2e; /* Dark gray text */
+  line-height: 1.6;
+}
+
+
+.feature-card i,
+.feature-card svg {
+  color: #2A6478; /* Coastal blue or your preferred blue */
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+
+/* Stats Section */
+.stats-section {
+  padding: 2rem 2rem;
+  background: rgba(255, 255, 255, 0.05); /* Softer, light glassy look */
+  backdrop-filter: blur(8px);
+}
+
+.stats-container {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+
+.stat-card {
+  text-align: center;
+  padding: 1rem;
+  min-width: 250px;
+  background: rgba(255, 255, 255, 0.2); /* Light translucent background */
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+}
+
+.stat-value {
+  font-size: 3rem;
+  font-weight: 700;
+  color: darkslategray; /* Bright blue for stat value */
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  color: #2c2c2c; /* Dark gray for better readability */
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.2rem;
+  }
+  
+  .cta-buttons {
+    flex-direction: column;
+  }
+  
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+  
+
+  
+  .stats-container {
+    gap: 1rem;
+  }
+}

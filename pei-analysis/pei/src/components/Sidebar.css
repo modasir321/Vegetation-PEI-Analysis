@@ -1,0 +1,78 @@
+.sidebar {
+  width: 240px;
+  background-color: #1f2937;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+  position: relative; /* allows natural layout flow */
+  height: 100%;        /* fills the parent's height */
+  overflow-y: auto;    /* allows scrolling if content is tall */
+  z-index: 1;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.logo-box {
+  background: orange;
+  color: black;
+  font-weight: bold;
+  font-size: 20px;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+}
+
+.logo-text {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 20px 0;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btn-sidebar {
+  padding: 10px;
+  background-color: #2563eb;  /* default blue */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+
+.btn-sidebar:hover {
+  background-color: lightblue;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+}
+
+.logout-btn {
+  background: transparent;
+  border: none;
+  color: #f87171;
+  cursor: pointer;
+  font-size: 16px;
+}
+
