@@ -1,0 +1,85 @@
+# Node modules - MUST EXCLUDE
+node_modules/
+**/node_modules/
+pei-analysis/pei/node_modules/
+pei/node_modules/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+*.egg-info/
+dist/
+build/
+
+# Earth Engine Credentials (SENSITIVE - DO NOT COMMIT)
+api/ee-*.json
+*.json
+!package.json
+!package-lock.json
+!pei-analysis/pei/package.json
+!pei-analysis/pei/package-lock.json
+!pei-analysis/api/pei2json.json
+
+# Windows scripts
+*.ps1
+*.cmd
+*.bat
+*.exe
+*.msi
+
+# React build files
+build/
+pei-analysis/pei/build/
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-*
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+*.lnk
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Large GeoJSON files
+*.geojson
+
+# Temporary files
+*.tmp
+*.temp
+*.cache
+.cache/
+
+# Python virtual environments
+venv/
+ENV/
+env/
+.venv
