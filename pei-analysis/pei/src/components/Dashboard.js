@@ -13,14 +13,205 @@ import {
   FiLayers, 
   FiCheckCircle,
   FiInfo,
-  FiDownload,
   FiRefreshCw,
   FiActivity,
-  FiMaximize2
+  FiMaximize2,
+  FiPlay,
+  FiPause,
+  FiImage,
+  FiGlobe
 } from 'react-icons/fi';
 import './dashboard.css';
 
+// Translations
+const translations = {
+  en: {
+    // Tabs
+    parameters: 'Parameters',
+    results: 'Results',
+    analytics: 'Analytics',
+    export: 'Export',
+    // Parameters tab
+    vegetationAnalysis: 'Vegetation Analysis Parameters',
+    instructions: 'Instructions',
+    drawPolygon: 'Draw a polygon or rectangle on the map',
+    selectDates: 'Select start and end dates',
+    clickLoad: 'Click "Load Imagery & NDVI"',
+    dateRange: 'Date Range',
+    startDate: 'Start Date',
+    endDate: 'End Date',
+    dateNote: 'Note: Date range must be ≤ 365 days',
+    yearSelection: 'Year Selection',
+    loadImagery: 'Load Imagery & NDVI',
+    loading: 'Loading...',
+    // Results tab
+    resultsAnalysis: 'Results & Analysis',
+    noDataLoaded: 'No data loaded yet',
+    goToParameters: 'Go to Parameters tab to load imagery',
+    imageryInfo: 'Imagery Information',
+    dateRangeLabel: 'Date Range',
+    areaAnalyzed: 'Area Analyzed',
+    imagesProcessed: 'Images Processed',
+    ndviClassification: 'NDVI Classification Distribution',
+    advancedStatistics: 'Advanced Statistics',
+    ndviDistribution: 'NDVI Distribution Analysis',
+    dataQuality: 'Data Quality Metrics',
+    automatedInsights: 'Automated Insights',
+    // Analytics tab
+    analyticsInsights: 'Analytics & Insights',
+    vegetationHealth: 'Vegetation Health Score',
+    healthScore: 'Health Score',
+    // Export tab
+    exportDownload: 'Export & Download',
+    noDataExport: 'No data available to export',
+    loadImageryHint: 'Load imagery to enable export options',
+    generateReport: 'Generate Report',
+    reportDescription: 'Download a comprehensive HTML report with all analysis results, statistics, and classification data.',
+    downloadReport: 'Download HTML Report',
+    exportInfo: 'Export Information',
+    analysisDate: 'Analysis Date',
+    exportDate: 'Export Date',
+    mapImagery: 'Map Imagery',
+    mapImageryNote: 'The map imagery is served as tiles and cannot be directly downloaded. To capture the map view, use your browser\'s screenshot tools or print-to-PDF feature.',
+    // Layer controls
+    layerControls: 'Layer Controls',
+    polygonLayer: 'Polygon Layer',
+    trueColorLayer: 'True Color Layer',
+    ndviLayer: 'NDVI Layer',
+    // Buttons
+    zoomToArea: 'Zoom to Area',
+    // Loading messages
+    fetchingImagery: 'Fetching imagery',
+    processingImages: 'Processing images',
+    analyzingNDVI: 'Analyzing NDVI',
+    complete: 'Complete',
+    // Months
+    january: 'January',
+    february: 'February',
+    march: 'March',
+    april: 'April',
+    may: 'May',
+    june: 'June',
+    july: 'July',
+    august: 'August',
+    september: 'September',
+    october: 'October',
+    november: 'November',
+    december: 'December',
+    // Statistics
+    min: 'Min',
+    max: 'Max',
+    mean: 'Mean',
+    median: 'Median',
+    q25: 'Quartile 25%',
+    q75: 'Quartile 75%',
+    iqr: 'IQR',
+    percentile50: '50th percentile',
+    upperQuartile: 'Upper quartile',
+    interquartileRange: 'Interquartile Range',
+    // Errors
+    noAreaSelected: 'No area selected. Please draw a polygon first.',
+    mapNotAvailable: 'Map not available',
+    noAreaToZoom: 'No area selected to zoom to. Please draw a polygon first.',
+    zoomedToArea: 'Zoomed to analysis area!'
+  },
+  nl: {
+    // Tabs
+    parameters: 'Parameters',
+    results: 'Resultaten',
+    analytics: 'Analyse',
+    export: 'Exporteren',
+    // Parameters tab
+    vegetationAnalysis: 'Vegetatie Analyse Parameters',
+    instructions: 'Instructies',
+    drawPolygon: 'Teken een polygoon of rechthoek op de kaart',
+    selectDates: 'Selecteer start- en einddatum',
+    clickLoad: 'Klik op "Afbeeldingen & NDVI laden"',
+    dateRange: 'Datumbereik',
+    startDate: 'Startdatum',
+    endDate: 'Einddatum',
+    dateNote: 'Opmerking: Datumbereik moet ≤ 365 dagen zijn',
+    yearSelection: 'Jaarselectie',
+    loadImagery: 'Afbeeldingen & NDVI laden',
+    loading: 'Laden...',
+    // Results tab
+    resultsAnalysis: 'Resultaten & Analyse',
+    noDataLoaded: 'Nog geen gegevens geladen',
+    goToParameters: 'Ga naar het tabblad Parameters om afbeeldingen te laden',
+    imageryInfo: 'Afbeeldingsinformatie',
+    dateRangeLabel: 'Datumbereik',
+    areaAnalyzed: 'Geanalyseerd gebied',
+    imagesProcessed: 'Verwerkte afbeeldingen',
+    ndviClassification: 'NDVI Classificatie Distributie',
+    advancedStatistics: 'Geavanceerde Statistieken',
+    ndviDistribution: 'NDVI Distributie Analyse',
+    dataQuality: 'Gegevenskwaliteit Metrieken',
+    automatedInsights: 'Geautomatiseerde Inzichten',
+    // Analytics tab
+    analyticsInsights: 'Analyse & Inzichten',
+    vegetationHealth: 'Vegetatie Gezondheidsscore',
+    healthScore: 'Gezondheidsscore',
+    // Export tab
+    exportDownload: 'Exporteren & Downloaden',
+    noDataExport: 'Geen gegevens beschikbaar om te exporteren',
+    loadImageryHint: 'Laad afbeeldingen om exportopties in te schakelen',
+    generateReport: 'Rapport Genereren',
+    reportDescription: 'Download een uitgebreid HTML-rapport met alle analyseresultaten, statistieken en classificatiegegevens.',
+    downloadReport: 'HTML Rapport Downloaden',
+    exportInfo: 'Export Informatie',
+    analysisDate: 'Analysedatum',
+    exportDate: 'Exportdatum',
+    mapImagery: 'Kaartafbeeldingen',
+    mapImageryNote: 'De kaartafbeeldingen worden als tegels geleverd en kunnen niet direct worden gedownload. Gebruik de screenshot-tools of print-naar-PDF functie van uw browser om de kaartweergave vast te leggen.',
+    // Layer controls
+    layerControls: 'Laagbesturing',
+    polygonLayer: 'Polygoon Laag',
+    trueColorLayer: 'Ware Kleur Laag',
+    ndviLayer: 'NDVI Laag',
+    // Buttons
+    zoomToArea: 'Zoom naar Gebied',
+    // Loading messages
+    fetchingImagery: 'Afbeeldingen ophalen',
+    processingImages: 'Afbeeldingen verwerken',
+    analyzingNDVI: 'NDVI analyseren',
+    complete: 'Voltooid',
+    // Months
+    january: 'Januari',
+    february: 'Februari',
+    march: 'Maart',
+    april: 'April',
+    may: 'Mei',
+    june: 'Juni',
+    july: 'Juli',
+    august: 'Augustus',
+    september: 'September',
+    october: 'Oktober',
+    november: 'November',
+    december: 'December',
+    // Statistics
+    min: 'Min',
+    max: 'Max',
+    mean: 'Gemiddelde',
+    median: 'Mediaan',
+    q25: 'Kwartiel 25%',
+    q75: 'Kwartiel 75%',
+    iqr: 'IQR',
+    percentile50: '50e percentiel',
+    upperQuartile: 'Bovenste kwartiel',
+    interquartileRange: 'Interkwartielbereik',
+    // Errors
+    noAreaSelected: 'Geen gebied geselecteerd. Teken eerst een polygoon.',
+    mapNotAvailable: 'Kaart niet beschikbaar',
+    noAreaToZoom: 'Geen gebied geselecteerd om naar te zoomen. Teken eerst een polygoon.',
+    zoomedToArea: 'Ingezoomd op analysegebied!'
+  }
+};
+
 const Dashboard = () => {
+  // Language state - only Dutch
+  const [language, setLanguage] = useState('nl');
+  const t = translations[language];
+  
   // Tab state
   const [activeTab, setActiveTab] = useState('parameters');
   
@@ -42,8 +233,24 @@ const Dashboard = () => {
   const [drawnPolygon, setDrawnPolygon] = useState(null);
   const [layersVisible, setLayersVisible] = useState({
     trueColor: true,
-    ndvi: true
+    ndvi: true,
+    polygon: true
   });
+  
+  // Class visibility state (for filtering classes)
+  const [classVisibility, setClassVisibility] = useState({
+    water: true,
+    sparse: true,
+    moderate: true,
+    dense: true
+  });
+  
+  // View mode: 'landcover' or 'imagery'
+  const [viewMode, setViewMode] = useState('landcover');
+  
+  // Animation state
+  const [isAnimating, setIsAnimating] = useState(false);
+  const animationIntervalRef = useRef(null);
   
   // Helper function to format date from day, month, year
   const formatDate = (day, month, year) => {
@@ -58,18 +265,18 @@ const Dashboard = () => {
   // Generate arrays for dropdowns
   const years = Array.from({ length: currentDate.getFullYear() - 2015 }, (_, i) => 2016 + i).reverse();
   const months = [
-    { value: '01', label: 'January' },
-    { value: '02', label: 'February' },
-    { value: '03', label: 'March' },
-    { value: '04', label: 'April' },
-    { value: '05', label: 'May' },
-    { value: '06', label: 'June' },
-    { value: '07', label: 'July' },
-    { value: '08', label: 'August' },
-    { value: '09', label: 'September' },
-    { value: '10', label: 'October' },
-    { value: '11', label: 'November' },
-    { value: '12', label: 'December' }
+    { value: '01', label: t.january },
+    { value: '02', label: t.february },
+    { value: '03', label: t.march },
+    { value: '04', label: t.april },
+    { value: '05', label: t.may },
+    { value: '06', label: t.june },
+    { value: '07', label: t.july },
+    { value: '08', label: t.august },
+    { value: '09', label: t.september },
+    { value: '10', label: t.october },
+    { value: '11', label: t.november },
+    { value: '12', label: t.december }
   ];
   
   // Get days array based on selected month and year
@@ -145,8 +352,8 @@ const Dashboard = () => {
   }, [activeTab, ndviData, loading]);
 
   const initializeMap = () => {
-    // Initialize map centered on world view
-    mapRef.current = L.map('map').setView([20, 0], 2);
+    // Initialize map centered on Amsterdam, Netherlands
+    mapRef.current = L.map('map').setView([52.3676, 4.9041], 11);
     layers.current.baseMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors'
     }).addTo(mapRef.current);
@@ -221,6 +428,7 @@ const Dashboard = () => {
       if (layers.current.customPolygon) {
         layers.current.customPolygon = null;
       }
+      setLayersVisible(prev => ({ ...prev, polygon: true }));
       clearImagery();
       showSuccess('Area cleared. Draw a new polygon to analyze.');
     });
@@ -245,7 +453,7 @@ const Dashboard = () => {
 
   const loadImageryAndNDVI = async () => {
     if (!drawnPolygon) {
-      showError('Please draw a polygon or rectangle on the map first');
+      showError(t.noAreaSelected);
       return;
     }
 
@@ -259,11 +467,12 @@ const Dashboard = () => {
       const requestBody = {
         geometry: drawnPolygon,
         start_date: startDate,
-        end_date: endDate
+        end_date: endDate,
+        cloud_cover: 12
       };
       
       // Step 1: Fetching imagery
-      setLoadingProgress({ step: 1, message: 'Fetching Sentinel-2 imagery...', imagesFound: 0 });
+      setLoadingProgress({ step: 1, message: t.fetchingImagery + '...', imagesFound: 0 });
       
       // Load imagery and NDVI
       const response = await fetch('http://localhost:5000/get_imagery', {
@@ -279,7 +488,7 @@ const Dashboard = () => {
       }
       
       // Step 2: Processing images
-      setLoadingProgress({ step: 2, message: `Processing ${data.images_found} images...`, imagesFound: data.images_found });
+      setLoadingProgress({ step: 2, message: `${t.processingImages} ${data.images_found}...`, imagesFound: data.images_found });
       
       // Add imagery layers to map
       layers.current.trueColor = L.tileLayer(data.true_color_tiles, {
@@ -293,7 +502,7 @@ const Dashboard = () => {
       setImageryData(data);
       
       // Step 3: Loading NDVI analysis
-      setLoadingProgress({ step: 3, message: 'Analyzing NDVI data...', imagesFound: data.images_found });
+      setLoadingProgress({ step: 3, message: t.analyzingNDVI + '...', imagesFound: data.images_found });
       
       // Load detailed NDVI analysis
       const ndviResponse = await fetch('http://localhost:5000/get_ndvi', {
@@ -306,7 +515,7 @@ const Dashboard = () => {
       
       if (ndviData.success) {
         // Step 4: Complete
-        setLoadingProgress({ step: 4, message: 'Complete!', imagesFound: data.images_found });
+        setLoadingProgress({ step: 4, message: t.complete + '!', imagesFound: data.images_found });
         setNdviData(ndviData);
         showSuccess(`Imagery loaded! Found ${data.images_found} images. NDVI analysis complete.`);
         setActiveTab('results');
@@ -345,16 +554,16 @@ const Dashboard = () => {
               classification.dense_vegetation.percentage
             ],
             backgroundColor: [
-              'rgba(54, 162, 235, 0.7)',  // Blue - Water
-              'rgba(255, 206, 86, 0.7)',  // Yellow - Sparse
-              'rgba(75, 192, 192, 0.7)',  // Teal - Moderate
-              'rgba(75, 192, 75, 0.7)'    // Green - Dense
+              '#1f77b4',  // Blue - Water (Esri standard)
+              '#bcbd22',  // Yellow-green - Sparse/Rangeland (Esri standard)
+              '#ffbb78',  // Orange - Crops/Moderate (Esri standard)
+              '#2ca02c'   // Green - Trees/Dense (Esri standard)
             ],
             borderColor: [
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)',
-              'rgba(75, 192, 75, 1)'
+              '#1f77b4',
+              '#bcbd22',
+              '#ffbb78',
+              '#2ca02c'
             ],
             borderWidth: 2
           }]
@@ -410,8 +619,8 @@ const Dashboard = () => {
           }
         } else {
           // Layer should be OFF - remove it if on map
-          if (mapRef.current.hasLayer(layers.current.trueColor)) {
-            mapRef.current.removeLayer(layers.current.trueColor);
+        if (mapRef.current.hasLayer(layers.current.trueColor)) {
+          mapRef.current.removeLayer(layers.current.trueColor);
           }
         }
       }
@@ -424,8 +633,22 @@ const Dashboard = () => {
           }
         } else {
           // Layer should be OFF - remove it if on map
-          if (mapRef.current.hasLayer(layers.current.ndvi)) {
-            mapRef.current.removeLayer(layers.current.ndvi);
+        if (mapRef.current.hasLayer(layers.current.ndvi)) {
+          mapRef.current.removeLayer(layers.current.ndvi);
+          }
+        }
+      }
+    } else if (layerType === 'polygon') {
+      if (layers.current.customPolygon && drawnLayerRef.current) {
+        if (newState) {
+          // Polygon should be ON - add it if not already on map
+          if (!mapRef.current.hasLayer(drawnLayerRef.current)) {
+            drawnLayerRef.current.addTo(mapRef.current);
+          }
+        } else {
+          // Polygon should be OFF - remove it if on map
+          if (mapRef.current.hasLayer(drawnLayerRef.current)) {
+            mapRef.current.removeLayer(drawnLayerRef.current);
           }
         }
       }
@@ -590,7 +813,7 @@ const Dashboard = () => {
   // Zoom to polygon or loaded data
   const zoomToArea = () => {
     if (!mapRef.current) {
-      showError('Map not available');
+      showError(t.mapNotAvailable);
       return;
     }
 
@@ -602,10 +825,10 @@ const Dashboard = () => {
           padding: [50, 50],
           maxZoom: 18
         });
-        showSuccess('Zoomed to analysis area');
+        showSuccess(t.zoomedToArea);
       } catch (error) {
         console.error('Error zooming to polygon:', error);
-        showError('Failed to zoom to area');
+        showError(t.noAreaToZoom);
       }
     } else if (drawnPolygon) {
       // If polygon exists but layer reference is missing, recreate bounds from GeoJSON
@@ -617,21 +840,20 @@ const Dashboard = () => {
           padding: [50, 50],
           maxZoom: 18
         });
-        showSuccess('Zoomed to analysis area');
+        showSuccess(t.zoomedToArea);
       } catch (error) {
         console.error('Error zooming to polygon:', error);
-        showError('Failed to zoom to area');
+        showError(t.noAreaToZoom);
       }
     } else {
-      showError('No area selected. Please draw a polygon first.');
+      showError(t.noAreaSelected);
     }
   };
 
   const sidebarTabs = [
-    { id: 'parameters', icon: FiSettings, label: 'Parameters' },
-    { id: 'results', icon: FiBarChart2, label: 'Results' },
-    { id: 'analytics', icon: FiTrendingUp, label: 'Analytics' },
-    { id: 'export', icon: FiDownload, label: 'Export' }
+    { id: 'parameters', icon: FiSettings, label: t.parameters },
+    { id: 'results', icon: FiBarChart2, label: t.results },
+    { id: 'analytics', icon: FiTrendingUp, label: t.analytics }
   ];
 
   return (
@@ -663,196 +885,205 @@ const Dashboard = () => {
         {/* Panel Content Area */}
         <aside className="panel-sidebar">
           <div className="panel-header-top">
-            <h2 className="panel-title">Vegetation Analysis</h2>
-          </div>
+            <h2 className="panel-title">{t.vegetationAnalysis}</h2>
+              </div>
 
           <div className="panel-content-area" ref={panelContentRef}>
             {activeTab === 'parameters' && (
               <div className="tab-panel">
                 <div className="panel-header">
                   <FiSettings className="panel-icon" />
-                  <h3>Parameters</h3>
-                </div>
-
-                {/* Instructions Card */}
-                <div className="info-card">
-                  <div className="info-card-header">
-                    <FiInfo className="info-icon" />
-                    <h4>Instructions</h4>
-                  </div>
-                  <ol className="instructions-list">
-                    <li>Draw a polygon or rectangle on the map</li>
-                    <li>Select start and end dates</li>
-                    <li>Click "Load Imagery & NDVI"</li>
-                  </ol>
-                  {drawnPolygon && (
-                    <div className="status-badge success">
-                      <FiCheckCircle />
-                      <span>Area selected</span>
-                    </div>
-                  )}
-                </div>
-
+                  <h3>{t.parameters}</h3>
+          </div>
+          
                 {/* Date Selection */}
                 <div className="date-selection-card">
                   <div className="card-header">
                     <FiCalendar className="card-icon" />
-                    <h4>Date Range</h4>
+                    <h4>{t.dateRange}</h4>
                   </div>
 
                   <div className="date-group">
-                    <label className="date-label">Start Date</label>
+                    <label className="date-label">{t.startDate}</label>
                     <div className="date-inputs">
-                      <select
-                        value={startDay}
-                        onChange={(e) => setStartDay(e.target.value)}
+              <select
+                value={startDay}
+                onChange={(e) => setStartDay(e.target.value)}
                         className="date-select"
-                      >
-                        {getDaysArray(startMonth, startYear).map(day => (
-                          <option key={day} value={day}>{day}</option>
-                        ))}
-                      </select>
-                      <select
-                        value={startMonth}
-                        onChange={(e) => {
-                          setStartMonth(e.target.value);
-                          const daysInMonth = getDaysInMonth(parseInt(e.target.value), parseInt(startYear));
-                          if (parseInt(startDay) > daysInMonth) {
-                            setStartDay(String(daysInMonth).padStart(2, '0'));
-                          }
-                        }}
+              >
+                {getDaysArray(startMonth, startYear).map(day => (
+                  <option key={day} value={day}>{day}</option>
+                ))}
+              </select>
+              <select
+                value={startMonth}
+                onChange={(e) => {
+                  setStartMonth(e.target.value);
+                  const daysInMonth = getDaysInMonth(parseInt(e.target.value), parseInt(startYear));
+                  if (parseInt(startDay) > daysInMonth) {
+                    setStartDay(String(daysInMonth).padStart(2, '0'));
+                  }
+                }}
                         className="date-select month"
-                      >
-                        {months.map(month => (
-                          <option key={month.value} value={month.value}>{month.label}</option>
-                        ))}
-                      </select>
-                      <select
-                        value={startYear}
-                        onChange={(e) => {
-                          setStartYear(e.target.value);
-                          const daysInMonth = getDaysInMonth(parseInt(startMonth), parseInt(e.target.value));
-                          if (parseInt(startDay) > daysInMonth) {
-                            setStartDay(String(daysInMonth).padStart(2, '0'));
-                          }
-                        }}
+              >
+                {months.map(month => (
+                  <option key={month.value} value={month.value}>{month.label}</option>
+                ))}
+              </select>
+              <select
+                value={startYear}
+                onChange={(e) => {
+                  setStartYear(e.target.value);
+                  const daysInMonth = getDaysInMonth(parseInt(startMonth), parseInt(e.target.value));
+                  if (parseInt(startDay) > daysInMonth) {
+                    setStartDay(String(daysInMonth).padStart(2, '0'));
+                  }
+                }}
                         className="date-select"
-                      >
-                        {years.map(year => (
-                          <option key={year} value={String(year)}>{year}</option>
-                        ))}
-                      </select>
+              >
+                {years.map(year => (
+                  <option key={year} value={String(year)}>{year}</option>
+                ))}
+              </select>
                     </div>
-                  </div>
-
+            </div>
+            
                   <div className="date-group">
-                    <label className="date-label">End Date</label>
+                    <label className="date-label">{t.endDate}</label>
                     <div className="date-inputs">
-                      <select
-                        value={endDay}
-                        onChange={(e) => setEndDay(e.target.value)}
+              <select
+                value={endDay}
+                onChange={(e) => setEndDay(e.target.value)}
                         className="date-select"
-                      >
-                        {getDaysArray(endMonth, endYear).map(day => (
-                          <option key={day} value={day}>{day}</option>
-                        ))}
-                      </select>
-                      <select
-                        value={endMonth}
-                        onChange={(e) => {
-                          setEndMonth(e.target.value);
-                          const daysInMonth = getDaysInMonth(parseInt(e.target.value), parseInt(endYear));
-                          if (parseInt(endDay) > daysInMonth) {
-                            setEndDay(String(daysInMonth).padStart(2, '0'));
-                          }
-                        }}
+              >
+                {getDaysArray(endMonth, endYear).map(day => (
+                  <option key={day} value={day}>{day}</option>
+                ))}
+              </select>
+              <select
+                value={endMonth}
+                onChange={(e) => {
+                  setEndMonth(e.target.value);
+                  const daysInMonth = getDaysInMonth(parseInt(e.target.value), parseInt(endYear));
+                  if (parseInt(endDay) > daysInMonth) {
+                    setEndDay(String(daysInMonth).padStart(2, '0'));
+                  }
+                }}
                         className="date-select month"
-                      >
-                        {months.map(month => (
-                          <option key={month.value} value={month.value}>{month.label}</option>
-                        ))}
-                      </select>
-                      <select
-                        value={endYear}
-                        onChange={(e) => {
-                          setEndYear(e.target.value);
-                          const daysInMonth = getDaysInMonth(parseInt(endMonth), parseInt(e.target.value));
-                          if (parseInt(endDay) > daysInMonth) {
-                            setEndDay(String(daysInMonth).padStart(2, '0'));
-                          }
-                        }}
+              >
+                {months.map(month => (
+                  <option key={month.value} value={month.value}>{month.label}</option>
+                ))}
+              </select>
+              <select
+                value={endYear}
+                onChange={(e) => {
+                  setEndYear(e.target.value);
+                  const daysInMonth = getDaysInMonth(parseInt(endMonth), parseInt(e.target.value));
+                  if (parseInt(endDay) > daysInMonth) {
+                    setEndDay(String(daysInMonth).padStart(2, '0'));
+                  }
+                }}
                         className="date-select"
-                      >
-                        {years.map(year => (
-                          <option key={year} value={String(year)}>{year}</option>
-                        ))}
-                      </select>
-                    </div>
+              >
+                {years.map(year => (
+                  <option key={year} value={String(year)}>{year}</option>
+                ))}
+              </select>
+            </div>
                   </div>
 
                   <p className="date-note">
-                    Note: Date range must be ≤ 365 days
-                  </p>
-                </div>
+              {t.dateNote}
+            </p>
+          </div>
+          
+                {/* Year Slider for Quick Selection */}
+                {years.length > 0 && (
+                  <div className="results-card">
+                    <div className="card-header">
+                      <FiCalendar className="card-icon" />
+                      <h4>{t.yearSelection}</h4>
+                    </div>
+                    <div className="year-slider-container">
+                      <input
+                        type="range"
+                        min={years[years.length - 1]}
+                        max={years[0]}
+                        value={startYear}
+                        onChange={(e) => {
+                          setStartYear(e.target.value);
+                          setEndYear(e.target.value);
+                        }}
+                        className="year-slider"
+                      />
+                      <div className="year-slider-labels">
+                        <span>{years[years.length - 1]}</span>
+                        <span className="current-year">{startYear}</span>
+                        <span>{years[0]}</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 {/* Load Button */}
-                <button 
-                  onClick={loadImageryAndNDVI} 
+            <button 
+              onClick={loadImageryAndNDVI} 
                   className="btn-primary-modern"
-                  disabled={!drawnPolygon || loading}
-                >
+              disabled={!drawnPolygon || loading}
+            >
                   {loading ? (
                     <>
                       <FiRefreshCw className="spinning" />
-                      <span>Loading...</span>
+                      <span>{t.loading}</span>
                     </>
                   ) : (
                     <>
-                      <FiDownload />
-                      <span>Load Imagery & NDVI</span>
+                      <FiImage />
+                      <span>{t.loadImagery}</span>
                     </>
                   )}
-                </button>
-              </div>
+            </button>
+          </div>
             )}
 
             {activeTab === 'results' && (
               <div className="tab-panel">
                 <div className="panel-header">
                   <FiBarChart2 className="panel-icon" />
-                  <h3>Results & Analysis</h3>
+                  <h3>{t.resultsAnalysis}</h3>
                 </div>
 
                 {!imageryData && !ndviData ? (
                   <div className="empty-state">
                     <FiBarChart2 className="empty-icon" />
-                    <p>No data loaded yet</p>
-                    <p className="empty-hint">Go to Parameters tab to load imagery</p>
+                    <p>{t.noDataLoaded}</p>
+                    <p className="empty-hint">{t.goToParameters}</p>
                   </div>
                 ) : (
                   <>
-                    {imageryData && (
+          {imageryData && (
                       <div className="results-card">
                         <div className="card-header">
                           <FiInfo className="card-icon" />
-                          <h4>Imagery Information</h4>
+                          <h4>{t.imageryInfo}</h4>
                         </div>
                         <div className="results-grid">
                           <div className="result-item">
-                            <span className="result-label">Date Range:</span>
+                            <span className="result-label">{t.dateRangeLabel}:</span>
                             <span className="result-value">{imageryData.date_range}</span>
                           </div>
                           <div className="result-item">
-                            <span className="result-label">Images Found:</span>
+                            <span className="result-label">{t.imagesProcessed}:</span>
                             <span className="result-value">{imageryData.images_found}</span>
                           </div>
                           <div className="result-item">
-                            <span className="result-label">Analysis Area:</span>
+                            <span className="result-label">{t.areaAnalyzed}:</span>
                             <span className="result-value">{imageryData.area_km2} km²</span>
                           </div>
-                        </div>
-                      </div>
-                    )}
+              </div>
+            </div>
+          )}
 
                     {ndviData && (
                       <>
@@ -881,13 +1112,41 @@ const Dashboard = () => {
                           </div>
                         </div>
 
+                        {/* View Mode Toggle */}
+                        <div className="results-card">
+                          <div className="card-header">
+                            <FiLayers className="card-icon" />
+                            <h4>View Mode</h4>
+                          </div>
+                          <div className="view-mode-toggle">
+                            <button
+                              className={`mode-btn ${viewMode === 'landcover' ? 'active' : ''}`}
+                              onClick={() => setViewMode('landcover')}
+                            >
+                              <FiBarChart2 />
+                              <span>Land Cover</span>
+                            </button>
+                            <button
+                              className={`mode-btn ${viewMode === 'imagery' ? 'active' : ''}`}
+                              onClick={() => setViewMode('imagery')}
+                            >
+                              <FiImage />
+                              <span>Imagery</span>
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Class Selection - Click to Filter */}
                         <div className="results-card">
                           <div className="card-header">
                             <FiBarChart2 className="card-icon" />
-                            <h4>NDVI Classification</h4>
+                            <h4>Classes - Click to Toggle</h4>
                           </div>
-                          <div className="classification-grid">
-                            <div className="classification-item">
+                          <div className="classification-grid-selectable">
+                            <div 
+                              className={`classification-item-selectable ${classVisibility.water ? 'active' : 'inactive'}`}
+                              onClick={() => setClassVisibility(prev => ({ ...prev, water: !prev.water }))}
+                            >
                               <div className="class-color water"></div>
                               <div className="class-info">
                                 <span className="class-label">Water/Bare Soil</span>
@@ -895,8 +1154,14 @@ const Dashboard = () => {
                                   {ndviData.classification.water.percentage}% ({ndviData.classification.water.area_km2} km²)
                                 </span>
                               </div>
+                              <div className="class-toggle-indicator">
+                                {classVisibility.water ? <FiCheckCircle /> : <span className="toggle-off">○</span>}
+                              </div>
                             </div>
-                            <div className="classification-item">
+                            <div 
+                              className={`classification-item-selectable ${classVisibility.sparse ? 'active' : 'inactive'}`}
+                              onClick={() => setClassVisibility(prev => ({ ...prev, sparse: !prev.sparse }))}
+                            >
                               <div className="class-color sparse"></div>
                               <div className="class-info">
                                 <span className="class-label">Sparse Vegetation</span>
@@ -904,8 +1169,14 @@ const Dashboard = () => {
                                   {ndviData.classification.sparse_vegetation.percentage}% ({ndviData.classification.sparse_vegetation.area_km2} km²)
                                 </span>
                               </div>
+                              <div className="class-toggle-indicator">
+                                {classVisibility.sparse ? <FiCheckCircle /> : <span className="toggle-off">○</span>}
+                              </div>
                             </div>
-                            <div className="classification-item">
+                            <div 
+                              className={`classification-item-selectable ${classVisibility.moderate ? 'active' : 'inactive'}`}
+                              onClick={() => setClassVisibility(prev => ({ ...prev, moderate: !prev.moderate }))}
+                            >
                               <div className="class-color moderate"></div>
                               <div className="class-info">
                                 <span className="class-label">Moderate Vegetation</span>
@@ -913,13 +1184,70 @@ const Dashboard = () => {
                                   {ndviData.classification.moderate_vegetation.percentage}% ({ndviData.classification.moderate_vegetation.area_km2} km²)
                                 </span>
                               </div>
+                              <div className="class-toggle-indicator">
+                                {classVisibility.moderate ? <FiCheckCircle /> : <span className="toggle-off">○</span>}
+                              </div>
                             </div>
-                            <div className="classification-item">
+                            <div 
+                              className={`classification-item-selectable ${classVisibility.dense ? 'active' : 'inactive'}`}
+                              onClick={() => setClassVisibility(prev => ({ ...prev, dense: !prev.dense }))}
+                            >
                               <div className="class-color dense"></div>
                               <div className="class-info">
                                 <span className="class-label">Dense Vegetation</span>
                                 <span className="class-value">
                                   {ndviData.classification.dense_vegetation.percentage}% ({ndviData.classification.dense_vegetation.area_km2} km²)
+                                </span>
+                              </div>
+                              <div className="class-toggle-indicator">
+                                {classVisibility.dense ? <FiCheckCircle /> : <span className="toggle-off">○</span>}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Land Cover Totals Summary */}
+                        <div className="results-card">
+                          <div className="card-header">
+                            <FiBarChart2 className="card-icon" />
+                            <h4>Land Cover Totals</h4>
+                          </div>
+                          <div className="land-cover-totals">
+                            <div className="totals-bar">
+                              <div 
+                                className="totals-segment water" 
+                                style={{ width: `${ndviData.classification.water.percentage}%` }}
+                                title={`Water/Bare Soil: ${ndviData.classification.water.percentage}%`}
+                              ></div>
+                              <div 
+                                className="totals-segment sparse" 
+                                style={{ width: `${ndviData.classification.sparse_vegetation.percentage}%` }}
+                                title={`Sparse: ${ndviData.classification.sparse_vegetation.percentage}%`}
+                              ></div>
+                              <div 
+                                className="totals-segment moderate" 
+                                style={{ width: `${ndviData.classification.moderate_vegetation.percentage}%` }}
+                                title={`Moderate: ${ndviData.classification.moderate_vegetation.percentage}%`}
+                              ></div>
+                              <div 
+                                className="totals-segment dense" 
+                                style={{ width: `${ndviData.classification.dense_vegetation.percentage}%` }}
+                                title={`Dense: ${ndviData.classification.dense_vegetation.percentage}%`}
+                              ></div>
+                            </div>
+                            <div className="totals-summary">
+                              <div className="summary-item">
+                                <span className="summary-label">Total Area:</span>
+                                <span className="summary-value">{imageryData.area_km2} km²</span>
+                              </div>
+                              <div className="summary-item">
+                                <span className="summary-label">Vegetation Coverage:</span>
+                                <span className="summary-value">
+                                  {(
+                                    parseFloat(ndviData.classification.sparse_vegetation.percentage) +
+                                    parseFloat(ndviData.classification.moderate_vegetation.percentage) +
+                                    parseFloat(ndviData.classification.dense_vegetation.percentage)
+                                  ).toFixed(1)}%
                                 </span>
                               </div>
                             </div>
@@ -945,9 +1273,9 @@ const Dashboard = () => {
                     )}
                   </>
                 )}
-              </div>
-            )}
-
+            </div>
+          )}
+          
             {activeTab === 'analytics' && (
               <div className="tab-panel">
                 <div className="panel-header">
@@ -1022,9 +1350,9 @@ const Dashboard = () => {
                             </div>
                           );
                         })()}
-                      </div>
-                    )}
-
+            </div>
+          )}
+          
                     {/* Advanced Statistics */}
                     {ndviData && ndviData.statistics.q25 && (
                       <div className="results-card">
@@ -1132,16 +1460,16 @@ const Dashboard = () => {
                             </div>
                           )}
                         </div>
-                      </div>
-                    )}
-
+            </div>
+          )}
+          
                     {/* Data Quality Metrics */}
-                    {imageryData && (
+            {imageryData && (
                       <div className="results-card">
                         <div className="card-header">
                           <FiInfo className="card-icon" />
                           <h4>Data Quality Metrics</h4>
-                        </div>
+                </div>
                         <div className="quality-metrics">
                           <div className="quality-item">
                             <span className="quality-label">Images Used:</span>
@@ -1149,7 +1477,7 @@ const Dashboard = () => {
                             <span className="quality-status">
                               {imageryData.images_found >= 5 ? '✓ Good' : imageryData.images_found >= 2 ? '⚠ Fair' : '⚠ Low'}
                             </span>
-                          </div>
+                </div>
                           <div className="quality-item">
                             <span className="quality-label">Date Range:</span>
                             <span className="quality-value">{imageryData.date_range}</span>
@@ -1168,17 +1496,17 @@ const Dashboard = () => {
                                 : 'Low image count: Results may have higher uncertainty.'}
                             </span>
                           </div>
-                        </div>
-                      </div>
-                    )}
+                </div>
+              </div>
+            )}
 
                     {/* Insights & Recommendations */}
-                    {ndviData && (
+            {ndviData && (
                       <div className="results-card insights-card">
                         <div className="card-header">
                           <FiTrendingUp className="card-icon" />
                           <h4>Insights & Recommendations</h4>
-                        </div>
+            </div>
                         <div className="insights-list">
                           {(() => {
                             const insights = [];
@@ -1247,15 +1575,15 @@ const Dashboard = () => {
                               <div key={idx} className={`insight-item insight-${insight.type}`}>
                                 <span className="insight-icon">{insight.icon}</span>
                                 <span className="insight-text">{insight.text}</span>
-                              </div>
+                </div>
                             )) : (
                               <div className="insight-item insight-info">
                                 <span className="insight-icon">ℹ</span>
                                 <span className="insight-text">Analysis complete. Review classification data for detailed insights.</span>
-                              </div>
+                </div>
                             );
                           })()}
-                        </div>
+                </div>
                       </div>
                     )}
                   </>
@@ -1263,88 +1591,6 @@ const Dashboard = () => {
               </div>
             )}
 
-            {activeTab === 'export' && (
-              <div className="tab-panel">
-                <div className="panel-header">
-                  <FiDownload className="panel-icon" />
-                  <h3>Export & Download</h3>
-                </div>
-
-                {!ndviData || !imageryData ? (
-                  <div className="empty-state">
-                    <FiDownload className="empty-icon" />
-                    <p>No data available to export</p>
-                    <p className="empty-hint">Load imagery to enable export options</p>
-                  </div>
-                ) : (
-                  <>
-                    {/* Export Report */}
-                    <div className="results-card">
-                      <div className="card-header">
-                        <FiDownload className="card-icon" />
-                        <h4>Generate Report</h4>
-                      </div>
-                      <p className="export-description">
-                        Download a comprehensive HTML report with all analysis results, statistics, and classification data.
-                      </p>
-                      <button 
-                        onClick={generateReport}
-                        className="btn-export"
-                      >
-                        <FiDownload />
-                        <span>Download HTML Report</span>
-                      </button>
-                    </div>
-
-                   
-
-                    {/* Export Chart */}
-                   
-
-                    {/* Export Information */}
-                    <div className="results-card">
-                      <div className="card-header">
-                        <FiInfo className="card-icon" />
-                        <h4>Export Information</h4>
-                      </div>
-                      <div className="export-info-list">
-                        <div className="export-info-item">
-                          <span className="info-label">Analysis Date:</span>
-                          <span className="info-value">{imageryData.date_range}</span>
-                        </div>
-                        <div className="export-info-item">
-                          <span className="info-label">Area Analyzed:</span>
-                          <span className="info-value">{imageryData.area_km2} km²</span>
-                        </div>
-                        <div className="export-info-item">
-                          <span className="info-label">Images Processed:</span>
-                          <span className="info-value">{imageryData.images_found}</span>
-                        </div>
-                        <div className="export-info-item">
-                          <span className="info-label">Export Date:</span>
-                          <span className="info-value">{new Date().toLocaleString()}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Note about Map Images */}
-                    <div className="results-card">
-                      <div className="card-header">
-                        <FiInfo className="card-icon" />
-                        <h4>Map Imagery</h4>
-                      </div>
-                      <p className="export-note">
-                        <FiInfo className="note-icon" />
-                        <span>
-                          The map imagery is served as tiles and cannot be directly downloaded. 
-                          To capture the map view, use your browser's screenshot tools or print-to-PDF feature.
-                        </span>
-                      </p>
-                    </div>
-                  </>
-                )}
-              </div>
-            )}
           </div>
         </aside>
 
@@ -1379,19 +1625,19 @@ const Dashboard = () => {
                     <div className="progress-steps">
                       <div className={`progress-step ${loadingProgress.step >= 1 ? 'active' : ''} ${loadingProgress.step > 1 ? 'completed' : ''}`}>
                         <div className="step-indicator"></div>
-                        <span>Fetching imagery</span>
+                        <span>{t.fetchingImagery}</span>
                       </div>
                       <div className={`progress-step ${loadingProgress.step >= 2 ? 'active' : ''} ${loadingProgress.step > 2 ? 'completed' : ''}`}>
                         <div className="step-indicator"></div>
-                        <span>Processing images</span>
+                        <span>{t.processingImages}</span>
                       </div>
                       <div className={`progress-step ${loadingProgress.step >= 3 ? 'active' : ''} ${loadingProgress.step > 3 ? 'completed' : ''}`}>
                         <div className="step-indicator"></div>
-                        <span>Analyzing NDVI</span>
+                        <span>{t.analyzingNDVI}</span>
                       </div>
                       <div className={`progress-step ${loadingProgress.step >= 4 ? 'active' : ''} ${loadingProgress.step > 4 ? 'completed' : ''}`}>
                         <div className="step-indicator"></div>
-                        <span>Complete</span>
+                        <span>{t.complete}</span>
                       </div>
                     </div>
                     <div className="progress-message">
@@ -1416,37 +1662,51 @@ const Dashboard = () => {
               <button 
                 className="zoom-to-area-btn"
                 onClick={zoomToArea}
-                title="Zoom to analysis area"
+                title={t.zoomToArea}
               >
                 <FiMaximize2 />
-                <span>Zoom to Area</span>
+                <span>{t.zoomToArea}</span>
               </button>
             )}
 
             {/* Layer Controls Overlay on Map */}
-            {imageryData && (
+            {(imageryData || drawnPolygon) && (
               <div className="layer-controls-overlay">
                 <div className="layer-controls-header">
                   <FiLayers className="layer-controls-icon" />
-                  <h4>Layer Controls</h4>
+                  <h4>{t.layerControls}</h4>
                 </div>
                 <div className="layer-controls-content">
-                  <label className="layer-checkbox-item">
-                    <input
-                      type="checkbox"
-                      checked={layersVisible.trueColor}
-                      onChange={() => toggleLayer('trueColor')}
-                    />
-                    <span>True Color Imagery</span>
-                  </label>
-                  <label className="layer-checkbox-item">
-                    <input
-                      type="checkbox"
-                      checked={layersVisible.ndvi}
-                      onChange={() => toggleLayer('ndvi')}
-                    />
-                    <span>NDVI Visualization</span>
-                  </label>
+                  {drawnPolygon && (
+                    <label className="layer-checkbox-item">
+                      <input
+                        type="checkbox"
+                        checked={layersVisible.polygon}
+                        onChange={() => toggleLayer('polygon')}
+                      />
+                      <span>{t.polygonLayer}</span>
+                    </label>
+                  )}
+                  {imageryData && (
+                    <>
+                      <label className="layer-checkbox-item">
+                        <input
+                          type="checkbox"
+                          checked={layersVisible.trueColor}
+                          onChange={() => toggleLayer('trueColor')}
+                        />
+                        <span>{t.trueColorLayer}</span>
+                      </label>
+                      <label className="layer-checkbox-item">
+                        <input
+                          type="checkbox"
+                          checked={layersVisible.ndvi}
+                          onChange={() => toggleLayer('ndvi')}
+                        />
+                        <span>{t.ndviLayer}</span>
+                      </label>
+                    </>
+                  )}
                 </div>
               </div>
             )}
